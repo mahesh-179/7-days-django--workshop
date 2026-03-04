@@ -1,0 +1,10 @@
+
+{
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./day03/static/src/input.css -o ./day03/static/src/output.css"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}
