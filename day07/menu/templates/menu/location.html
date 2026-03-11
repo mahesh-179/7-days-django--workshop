@@ -1,37 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Branches - Tea House</title>
-</head>
-<body style="margin:0; padding:0; font-family: 'Arial', sans-serif; background-color: #fffaf3; color: #4e342e;">
+{% extends "layout.html" %}
 
-    <!-- Header -->
-    <header style="text-align:center; padding:50px 20px; background: linear-gradient(90deg, #d7ccc8, #bcaaa4);">
-        <h1 style="font-size:50px; margin-bottom:10px;">Our Branches</h1>
-        <p style="font-size:18px; max-width:700px; margin:0 auto; line-height:1.6;">
-            Our tea house has branches all over Nepal, bringing the warmth and aroma of freshly brewed tea to every corner. 
-            Loved by locals and travelers alike, each branch is a cozy spot to relax, sip your favorite chai, and enjoy a moment of peace.
-        </p>
-    </header>
+{% block title %}Our Branches - Tea House{% endblock %}
 
-    <!-- Branch List -->
-    <section style="padding:50px 20px; display:flex; flex-wrap:wrap; justify-content:center; gap:30px;">
+{% block content %}
+<!-- Header -->
+<header style="text-align:center; padding:50px 20px; background: linear-gradient(90deg, #d7ccc8, #bcaaa4);">
+    <h1 style="font-size:50px; margin-bottom:10px;">Our Branches</h1>
+    <p style="font-size:18px; max-width:700px; margin:0 auto; line-height:1.6;">
+        Our tea house has branches all over Nepal, bringing the warmth and aroma of freshly brewed tea to every corner. 
+        Loved by locals and travelers alike, each branch is a cozy spot to relax, sip your favorite chai, and enjoy a moment of peace.
+    </p>
+</header>
 
-        {% for branch in branches %}
-        <div style="background-color:#fdf1e7; border-radius:15px; padding:30px; width:280px; box-shadow: 3px 3px 15px rgba(0,0,0,0.1); text-align:center; transition: transform 0.3s; cursor:pointer;"
-             onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
-            <h2 style="font-size:24px; margin-bottom:10px; color:#3e2723;">{{ branch.name }}</h2>
-            <p style="font-size:16px; color:#5d4037; margin-bottom:15px;"><strong>Location:</strong> {{ branch.location }}</p>
-             <p style="font-size:16px; color:#5d4037; margin-bottom:15px;"><strong>Varities:</strong> {{ branch.chai_varities }}</p>
-            <p style="font-size:14px; color:#6d4c41;">Serving the finest chai and warm hospitality every day.</p>
-        </div>
-        {% empty %}
-        <p style="text-align:center; color:#a1887f; font-size:16px;">No branches found yet.</p>
-        {% endfor %}
+<!-- Branch List -->
+<section style="padding:50px 20px; display:flex; flex-wrap:wrap; justify-content:center; gap:30px;">
+    {% for branch in branches %}
+    <div style="
+        background-color:#fdf1e7; 
+        border-radius:15px; 
+        padding:30px; 
+        width:280px; 
+        box-shadow: 3px 3px 15px rgba(0,0,0,0.1); 
+        text-align:center; 
+        transition: transform 0.3s; 
+        cursor:pointer;"
+        onmouseover="this.style.transform='translateY(-5px)';" 
+        onmouseout="this.style.transform='translateY(0)';"
+    >
+        <h2 style="font-size:24px; margin-bottom:10px; color:#3e2723;">{{ branch.name }}</h2>
+        <p style="font-size:16px; color:#5d4037; margin-bottom:15px;"><strong>Location:</strong> {{ branch.location }}</p>
 
-    </section>
+        <!-- Chai Varieties -->
+        <p style="font-size:16px; color:#5d4037; margin-bottom:10px;"><strong>Varieties:</strong></p>
+        <ul style="list-style-type: square; padding-left: 20px; text-align:left; color:#4e342e; margin-bottom:15px;">
+            {% for chai in branch.chai_varities.all %}
+            <li>{{ chai.name }}</li>
+            {% empty %}
+            <li>No chai varieties available.</li>
+            {% endfor %}
+        </ul>
 
-</body>
-</html>
+        <p style="font-size:14px; color:#6d4c41;">Serving the finest chai and warm hospitality every day.</p>
+    </div>
+    {% empty %}
+    <p style="text-align:center; color:#a1887f; font-size:16px;">No branches found yet.</p>
+    {% endfor %}
+</section>
+ <a href="{% url 'home' %}" style="
+    display: inline-block;
+    color: #6b4226;
+    border: 2px solid #6b4226;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+">
+    ← Back
+</a>
+
+<!-- Responsive CSS -->
+<style>
+@media screen and (max-width: 600px) {
+    section div[style*="width:280px"] {
+        width: 90% !important;
+    }
+}
+</style>
+{% endblock %}

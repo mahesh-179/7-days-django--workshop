@@ -10,5 +10,5 @@ from . import views
 urlpatterns = [
     path('menu/', views.menu, name='menu'),  # Menu page
     path('chai/<int:chai_id>/', views.order_confirmation, name='order_confirmation'),  # Order confirmation
-     path('menu/', views.store_location, name='store'),
+     path('store/', views.store_location, name='store'),
 ]

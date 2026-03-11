@@ -14,10 +14,10 @@
     <nav style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="color:#ffcc80; font-size:24px; font-weight:600; letter-spacing:1px;">MaheshChai Wala</h2>
         <ul style="list-style:none; display:flex; gap:35px;">
-            <li><a href="/" style="text-decoration:none; color:white; font-size:16px; position:relative; transition:0.3s;">Home</a></li>
+            <li><a href="{% url 'home' %}" style="text-decoration:none; color:white; font-size:16px; position:relative; transition:0.3s;">Home</a></li>
             <li><a href="{% url 'menu' %}" style="text-decoration:none; color:white; font-size:16px; position:relative; transition:0.3s;">Menu</a></li>
             <li><a href="{% url 'about' %}" style="text-decoration:none; color:white; font-size:16px; position:relative; transition:0.3s;">About</a></li>
-            <li><a href="{% url 'store' %}" style="text-decoration:none; color:white; font-size:16px; position:relative; transition:0.3s;">Contact</a></li>
+            <li><a href="{% url 'store' %}" style="text-decoration:none; color:white; font-size:16px; position:relative; transition:0.3s;">Our Branches</a></li>
         </ul>
     </nav>
 </header>
