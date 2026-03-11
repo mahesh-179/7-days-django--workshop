@@ -29,12 +29,17 @@
             ">
             {% endif %}
 
-            <h3 style="margin-bottom: 12px; font-size: 20px; color:#3e2723;">{{ item.name }}</h3>
-            <p style="color:#bf360c; font-weight:600; font-size:18px;">Rs {{ item.price }}</p>
+            <h3 style="margin-bottom: 12px; font-size: 20px; color:#3e2723;">
+                {{ item.name }}
+            </h3>
+
+            <p style="color:#bf360c; font-weight:600; font-size:18px;">
+                Rs {{ item.price }}
+            </p>
 
             <a href="{% url 'order_confirmation' item.id %}" style="text-decoration:none;">
                 <button style="
-                    background-color: #6b4226; /* brown chai color */
+                    background-color: #6b4226;
                     color: white; 
                     padding: 10px 20px; 
                     border: none; 
@@ -42,12 +47,44 @@
                     cursor: pointer;
                     font-size: 16px;
                     transition: 0.3s;
-                " 
+                "
                 onmouseover="this.style.backgroundColor='#a9745b'; this.style.transform='scale(1.05)';" 
                 onmouseout="this.style.backgroundColor='#6b4226'; this.style.transform='scale(1)';">
                     Purchase
                 </button>
             </a>
+
+            <!-- Reviews Section -->
+            <div style="margin-top:15px; text-align:left;">
+                <h4 style="font-size:16px; color:#4e342e; margin-bottom:8px;">
+                    Reviews
+                </h4>
+
+                {% for review in item.reviews.all %}
+                <div style="
+                    background:#fff8f0;
+                    padding:8px;
+                    margin-bottom:8px;
+                    border-radius:6px;
+                    border:1px solid #eee;
+                ">
+                    <strong style="color:#3e2723;">
+                        {{ review.user.username }}
+                    </strong>
+
+                    <p style="margin:4px 0; font-size:14px;">
+                        {{ review.comments }}
+                    </p>
+
+                    <small style="color:gray;">
+                        {{ review.date_added }}
+                    </small>
+                </div>
+
+                {% empty %}
+                <small style="color:gray;">No reviews yet</small>
+                {% endfor %}
+            </div>
 
         </div>
         {% empty %}
@@ -56,17 +93,17 @@
     </div>
 </section>
 
-<!-- Inline Responsive & Hover -->
 <style>
-    @media screen and (max-width: 600px) {
-        section div[style*="width: 250px"] {
-            width: 90% !important;
-        }
+@media screen and (max-width: 600px) {
+    section div[style*="width: 250px"] {
+        width: 90% !important;
     }
+}
 
-    section div[style*="transition: 0.3s"]:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+section div[style*="transition: 0.3s"]:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 </style>
+
 {% endblock %}
