@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Tweet
 from .forms import TweetForm
+from django.contrib import messages
 
 # # Simple test view
 # def test(request):
@@ -17,6 +18,7 @@ def tweet_create(request):
         if form.is_valid():
             tweet = form.save()  # get model instance
             tweet.save()
+            messages.success(request, "Tweet added successfully!")
             return redirect('tweet_list')    # redirect after saving
     else:
         form = TweetForm()  # empty form for GET request
@@ -29,8 +31,8 @@ def tweet_edit(request, tweet_id):
     if request.method == 'POST':
         form = TweetForm(request.POST, request.FILES, instance=tweet)
         if form.is_valid():
-            tweet = form.save()
             tweet.save()
+            messages.info(request, "Tweet updated!")
             return redirect('tweet_list')
     else:
         form = TweetForm(instance=tweet)
@@ -42,6 +44,7 @@ def tweet_delete(request, tweet_id):
 
     if request.method == 'POST':
         tweet.delete()
+        messages.error(request, "Tweet deleted!")
         return redirect('tweet_list')
     return render(request,"tweets/tweet_confirm.html",{'tweet':tweet})
 
