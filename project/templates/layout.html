@@ -4,56 +4,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title>
-        {% block title %}
-        CHAI AUR DJANGO
-        {% endblock %}
-    </title>
-</head>
-<body class="bg-body-secondary">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">TweetsBar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'tweet_list' %}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'tweet_create' %}">Create Tweet</a>
-        </li>
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}">Register</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>{% block title %}TweetsBar{% endblock %}</title>
+
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #1877f2 !important;
+            font-size: 24px;
+        }
+
+        /* Center feed */
+        .main-container {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        /* Card */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .post-img {
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Buttons */
+        .btn-light {
+            background-color: #f0f2f5;
+            border: none;
+        }
+
+        .btn-light:hover {
+            background-color: #e4e6eb;
+        }
+
+        .btn-primary {
+            background-color: #1877f2;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #166fe5;
+        }
+
+        /* Profile circle */
+        .profile-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #1877f2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 🔵 NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="{% url 'tweet_list' %}">TweetsBar</a>
+
+    <!-- Search -->
+    <form class="d-flex mx-auto w-50">
+        <input class="form-control rounded-pill" type="search" placeholder="Search Tweets...">
+    </form>
+
+   <!-- RIGHT SIDE AUTH -->
+<div class="d-flex align-items-center">
+
+    {% if user.is_authenticated %}
+
+        <div class="profile-circle">
+            {{ user.username|first|upper }}
+        </div>
+
+        <span class="me-2 fw-semibold">
+            {{ user.username }}
+        </span>
+
+        <a href="{% url 'tweet_create' %}" class="btn btn-primary btn-sm me-2">
+            + Tweet
+        </a>
+
+        <!-- ✅ FIXED LOGOUT (POST) -->
+        <form action="{% url 'logout' %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">
+                Logout
+            </button>
+        </form>
+
+    {% else %}
+
+        <a href="{% url 'login' %}" class="btn btn-primary btn-sm me-2">
+            Login
+        </a>
+
+        <a href="{% url 'register' %}" class="btn btn-success btn-sm">
+            Register
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- 🔔 Messages -->
 {% if messages %}
-<div class="container mt-3">
+<div class="container mt-3 main-container">
     {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     {% endfor %}
 </div>
 {% endif %}
-        {% block content %}
-        
-        {% endblock %}
-    </div>
+</nav>
+
+<!-- 📰 MAIN CONTENT -->
+<div class="main-container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
