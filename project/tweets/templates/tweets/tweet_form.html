@@ -16,8 +16,7 @@
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     
-                    {{ form|crispy }}   <!-- ⭐ Crispy replaces all manual fields -->
-
+                    {{ form|crispy }}   
                     <button type="submit" class="btn btn-primary w-100 mt-3">
                         Post Tweet
                     </button>

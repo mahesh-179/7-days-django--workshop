@@ -5,13 +5,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
-# 🔹 Show all tweets (latest first)
+#  Show all tweets (latest first)
 def tweet_list(request):
     tweets = Tweet.objects.all().order_by('-created_at')
     return render(request, 'tweets/tweet_list.html', {'tweets': tweets})
 
 
-# 🔹 Create a new tweet
+#  Create a new tweet
 @login_required
 def tweet_create(request):
     if request.method == "POST":
@@ -28,7 +28,7 @@ def tweet_create(request):
     return render(request, 'tweets/tweet_form.html', {'form': form})
 
 
-# 🔹 Edit tweet (only owner can edit)
+#  Edit tweet (only owner can edit)
 @login_required
 def tweet_edit(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
@@ -45,7 +45,7 @@ def tweet_edit(request, tweet_id):
     return render(request, 'tweets/update.html', {'form': form})
 
 
-# 🔹 Delete tweet (only owner can delete)
+#  Delete tweet (only owner can delete)
 @login_required
 def tweet_delete(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
@@ -58,7 +58,7 @@ def tweet_delete(request, tweet_id):
     return render(request, "tweets/tweet_confirm.html", {'tweet': tweet})
 
 
-# 🔹 Register new user
+#  Register new user
 def register(request):
     if request.method == 'POST':
         form = UserRegister(request.POST)

@@ -7,7 +7,7 @@
 {% for tweet in tweets %}
 <div class="card mb-3 p-3">
 
-    <!-- 🔹 Header -->
+    <!--  Header -->
     <div class="d-flex align-items-center mb-2">
         
         <!-- Profile circle -->
@@ -21,15 +21,15 @@
         </div>
     </div>
 
-    <!-- 🔹 Text -->
+    <!--  Text -->
     <p class="mb-2">{{ tweet.text }}</p>
 
-    <!-- 🔹 Image -->
+    <!--  Image -->
     {% if tweet.photo %}
         <img src="{{ tweet.photo.url }}" class="img-fluid post-img mb-2">
     {% endif %}
 
-    <!-- 🔹 Actions -->
+    <!--  Actions -->
     <div class="d-flex justify-content-between border-top pt-2">
 
         <div>
@@ -50,7 +50,7 @@
 
 {% empty %}
 <div class="text-center mt-5">
-    <h5>No tweets yet 😢</h5>
+    <h5>No tweets yet !! </h5>
 </div>
 {% endfor %}
 
