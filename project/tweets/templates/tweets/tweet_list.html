@@ -22,8 +22,10 @@
                     <p class="text-muted small">{{ tweet.created_at }}</p>
                     <h5 class="card-title">{{ tweet.user.username }}</h5>
                     <p class="card-text">{{ tweet.text }}</p>
-                    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    {% if tweet.user == request.user %}
+    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-warning btn-sm">Edit</a>
+    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger btn-sm">Delete</a>
+{% endif %}
                 </div>
             </div>
         </div>

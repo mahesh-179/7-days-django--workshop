@@ -1,58 +1,72 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Tweet
-from .forms import TweetForm
+from .forms import TweetForm, UserRegister
 from django.contrib import messages
-
-# # Simple test view
-# def test(request):
-#     return render(request, "tweets/index.html")
+from django.contrib.auth.decorators import login_required
 
 
+# 🔹 Show all tweets (latest first)
 def tweet_list(request):
     tweets = Tweet.objects.all().order_by('-created_at')
     return render(request, 'tweets/tweet_list.html', {'tweets': tweets})
-# Create a new tweet
+
+
+# 🔹 Create a new tweet
+@login_required
 def tweet_create(request):
     if request.method == "POST":
-        form = TweetForm(request.POST, request.FILES)  # handle image upload
+        form = TweetForm(request.POST, request.FILES)
         if form.is_valid():
-            tweet = form.save()  # get model instance
+            tweet = form.save(commit=False)   # don't save yet
+            tweet.user = request.user         # ⭐ assign logged-in user
             tweet.save()
             messages.success(request, "Tweet added successfully!")
-            return redirect('tweet_list')    # redirect after saving
+            return redirect('tweet_list')
     else:
-        form = TweetForm()  # empty form for GET request
+        form = TweetForm()
 
     return render(request, 'tweets/tweet_form.html', {'form': form})
 
+
+# 🔹 Edit tweet (only owner can edit)
+@login_required
 def tweet_edit(request, tweet_id):
-    tweet = get_object_or_404(Tweet, pk=tweet_id)
+    tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
 
     if request.method == 'POST':
         form = TweetForm(request.POST, request.FILES, instance=tweet)
         if form.is_valid():
-            tweet.save()
+            form.save()
             messages.info(request, "Tweet updated!")
             return redirect('tweet_list')
     else:
         form = TweetForm(instance=tweet)
 
     return render(request, 'tweets/update.html', {'form': form})
-         
+
+
+# 🔹 Delete tweet (only owner can delete)
+@login_required
 def tweet_delete(request, tweet_id):
-    tweet = get_object_or_404(Tweet, pk=tweet_id)
+    tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
 
     if request.method == 'POST':
         tweet.delete()
         messages.error(request, "Tweet deleted!")
         return redirect('tweet_list')
-    return render(request,"tweets/tweet_confirm.html",{'tweet':tweet})
 
-def tweet_list(request):
-    tweets = Tweet.objects.all()
-    print("TOTAL:", tweets.count())
-    return render(request, 'tweets/tweet_list.html', {'tweets': tweets})
+    return render(request, "tweets/tweet_confirm.html", {'tweet': tweet})
 
 
+# 🔹 Register new user
+def register(request):
+    if request.method == 'POST':
+        form = UserRegister(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User Created Successfully")
+            return redirect('tweet_list')
+    else:
+        form = UserRegister()
 
-    
+    return render(request, 'registeration/register.html', {'form': form})
