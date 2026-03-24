@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block title %} TWEETS HOME PAGE {% endblock %}
+{% block content %}
+{% if query %}
+{% if tweets %}
+    <h5>Results for "{{ query }}"</h5>
+   {% else %}
+        <h5>No results found for "{{ query }}" </h5>
+    {% endif %}
+{% endif %}
+{% for tweet in tweets %}
+<div class="card mb-3 p-3">
+
+    <!--  Header -->
+    <div class="d-flex align-items-center mb-2">
+        
+        <!-- Profile circle -->
+        <div class="profile-circle me-2">
+            {{ tweet.user.username|first|upper }}
+        </div>
+
+        <div>
+            <strong>{{ tweet.user.username }}</strong><br>
+            <small class="text-muted">{{ tweet.created_at|timesince }} ago</small>
+        </div>
+    </div>
+
+    <!--  Text -->
+    <p class="mb-2">{{ tweet.text }}</p>
+
+    <!--  Image -->
+    {% if tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="img-fluid post-img mb-2">
+    {% endif %}
+
+    <!--  Actions -->
+    <div class="d-flex justify-content-between border-top pt-2">
+
+        <div>
+            <button class="btn btn-light btn-sm">👍 Like</button>
+            <button class="btn btn-light btn-sm">💬 Comment</button>
+        </div>
+
+        {% if tweet.user == request.user %}
+        <div>
+            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endfor %}
+{% endblock %}

@@ -70,3 +70,17 @@ def register(request):
         form = UserRegister()
 
     return render(request, 'registeration/register.html', {'form': form})
+
+def search(request):
+    query = request.GET.get('query', '')  # safe तरीका
+    tweets = []
+
+    if query:
+        tweets = Tweet.objects.filter(text__icontains=query)
+
+    context = {
+        "tweets": tweets,
+        "query": query
+    }
+
+    return render(request, "tweets/search.html", context)
