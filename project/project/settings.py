@@ -127,3 +127,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = 'tweet_list'
 LOGOUT_REDIRECT_URL = 'login'
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 4},  # make it easier instead of removing
+    },
+]
